@@ -4,13 +4,15 @@ namespace App\Http\Requests;
 
 use Illuminate\Foundation\Http\FormRequest;
 
-class StoreProjectRequest extends FormRequest {
+class StoreProjectRequest extends FormRequest
+{
     /**
      * Determine if the user is authorized to make this request.
      *
      * @return bool
      */
-    public function authorize() {
+    public function authorize()
+    {
         return true;
     }
 
@@ -19,10 +21,12 @@ class StoreProjectRequest extends FormRequest {
      *
      * @return array<string, mixed>
      */
-    public function rules() {
+    public function rules()
+    {
         return [
             'title' => ['required', 'max:150', 'unique:projects'],
-            'description' => ['nullable']
+            'description' => ['nullable'],
+            'cover_image' => ['nullable', 'image', 'max:512'],
         ];
     }
 
@@ -31,7 +35,8 @@ class StoreProjectRequest extends FormRequest {
      *
      * @return array
      */
-    public function messages() {
+    public function messages()
+    {
         return [
             'title.required' => 'Il titolo è richiesto',
         ];

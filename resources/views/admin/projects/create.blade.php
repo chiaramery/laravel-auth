@@ -6,13 +6,14 @@
         <div class="row justify-content-center">
             <div class="col-8">
                 @include('partials.errors')
-                <form action="{{ route('admin.projects.store') }}" method="POST">
+                <form action="{{ route('admin.projects.store') }}" method="POST" enctype="multipart/form-data">
                     @csrf
                     <div class="mb-3">
                         <label for="title">Titolo</label>
                         <input type="text" id="title" name="title" class="form-control" value="{{ old('title') }}">
                     </div>
-                    <div class="mb-3">
+                    <input type="file" class="mt-3">
+                    <div class="mt-3">
                         <label for="description">Descrizione</label>
                         <textarea name="description" id="description" rows="10" class="form-control">{{ old('description') }}</textarea>
                     </div>
