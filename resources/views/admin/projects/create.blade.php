@@ -12,7 +12,11 @@
                         <label for="title">Titolo</label>
                         <input type="text" id="title" name="title" class="form-control" value="{{ old('title') }}">
                     </div>
-                    <input type="file" class="mt-3">
+
+                    <div class="form-group mt-3">
+                        <label for="cover_image">Immagine</label>
+                        <input type="file" name="cover_image" id="cover_image" class="form-control">
+                    </div>
                     <div class="mt-3">
                         <label for="description">Descrizione</label>
                         <textarea name="description" id="description" rows="10" class="form-control">{{ old('description') }}</textarea>

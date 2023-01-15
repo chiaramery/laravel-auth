@@ -6,14 +6,17 @@ use App\Http\Controllers\Controller;
 use App\Http\Requests\StoreProjectRequest;
 use App\Http\Requests\UpdateProjectRequest;
 use App\Models\Project;
+use Illuminate\Support\Facades\Storage;
 
-class ProjectController extends Controller {
+class ProjectController extends Controller
+{
     /**
      * Display a listing of the resource.
      *
      * @return \Illuminate\Http\Response
      */
-    public function index() {
+    public function index()
+    {
         $projects = Project::all();
         return view('admin.projects.index', compact('projects'));
     }
@@ -23,7 +26,8 @@ class ProjectController extends Controller {
      *
      * @return \Illuminate\Http\Response
      */
-    public function create() {
+    public function create()
+    {
         return view('admin.projects.create');
     }
 
@@ -33,9 +37,14 @@ class ProjectController extends Controller {
      * @param  \App\Http\Requests\StoreProjectRequest  $request
      * @return \Illuminate\Http\Response
      */
-    public function store(StoreProjectRequest $request) {
+    public function store(StoreProjectRequest $request)
+    {
         $val_data = $request->validated();
         $val_data['slug'] = Project::generateSlug($val_data['title']);
+        if ($request->hasFile('cover_image')) {
+            $path = Storage::put('projects_imgages', $request->cover_image);
+            $form_data['cover_image'] = $path;
+        }
         $project = Project::create($val_data);
         return redirect()->route('admin.projects.index')->with('message', "Il progetto $project->title è stato creato con successo");
     }
@@ -46,7 +55,8 @@ class ProjectController extends Controller {
      * @param  \App\Models\Project  $project
      * @return \Illuminate\Http\Response
      */
-    public function show(Project $project) {
+    public function show(Project $project)
+    {
         return view('admin.projects.show', compact('project'));
     }
 
@@ -56,7 +66,8 @@ class ProjectController extends Controller {
      * @param  \App\Models\Project  $project
      * @return \Illuminate\Http\Response
      */
-    public function edit(Project $project) {
+    public function edit(Project $project)
+    {
         return view('admin.projects.edit', compact('project'));
     }
 
@@ -67,7 +78,8 @@ class ProjectController extends Controller {
      * @param  \App\Models\Project  $project
      * @return \Illuminate\Http\Response
      */
-    public function update(UpdateProjectRequest $request, Project $project) {
+    public function update(UpdateProjectRequest $request, Project $project)
+    {
         $val_data = $request->validated();
         $val_data['slug'] = Project::generateSlug($val_data['title']);
         $project->update($val_data);
@@ -80,7 +92,8 @@ class ProjectController extends Controller {
      * @param  \App\Models\Project  $project
      * @return \Illuminate\Http\Response
      */
-    public function destroy(Project $project) {
+    public function destroy(Project $project)
+    {
         $project->delete();
         return redirect()->route('admin.projects.index')->with('message', "$project->title è stato cancellato");
     }
